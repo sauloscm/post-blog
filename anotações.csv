@@ -1,0 +1,126 @@
+/*aprendi a como baixar o express, que funciona como se fosse uma biblioteca, uma extensão
+que deve ser inicializada com o comando (npm install express) no cmd sempre que iniciar
+um novo projeto, mas esse comando deve vir depois do comando (npm init -y) que cria as dependencias
+do arquivo package.json*/
+
+import express from "express";
+import path from 'path'
+const app = express()
+const __dirname = path.resolve()
+
+/*fazendo app como const ao inves de var, garantimos que não perdemos o conteudo atribuido a ele, estamos
+usando dependencias da pasta node_modules, especificamente dentro dele  da pasta express que reduzimos bastante
+o trabalho na hora de solicitar respostas e requisições a um servidor. Em outras palavras puxando as dependencias
+de express criamos atalhos muito uteis que podems ser chamados pela constante "app" */
+
+/*tive que importa o path do arquivo path do node modules para conseguir pegar o caminho do diretorio do projeto
+para usar no res.sendfile, isso serve para garantir uma segurança na hora de executar o comando, dessa forma chamamos
+__dirname como atalho ou variavel para o buscador de caminhos*/
+
+app.get("/",function (req,res){
+    res.sendFile(__dirname + "/html/index.html");
+});
+
+
+/* app.get() define uma rota para o servidor. Quando um usuário acessa essa rota via navegador ou API client,
+   o Express responde com o conteúdo definido dentro da função de callback = (req,res). 
+   A rota "/" é a rota raiz, acessada ao abrir "http://localhost:8081/".
+*/
+app.get("/eu",function (req,res){
+    res.sendFile(__dirname + "/html/eu.html")
+});
+app.get("/sobre",function (req,res){
+    res.send("este eh um teste de pagina, uma resposta ao cliente")
+});
+
+/*modificando a rota como nos exemplos anteriores usando "/eu" e "/sobre" criamos novos caminhos para o servidor ou seja
+novas paginas que podem ser acessadas atraves de uma simples mudança de endereço, isso é chamado de mudança de rotas*/
+
+app.get("/ola/:cargo/:nome",function (req,res){
+    res.send("ola")
+});
+
+/*definição de parametros para o acesso as rotas, para acessar a rota "ola", é preciso passar um cargo e um nome pela url
+dessa forma para ver a mensagem na tela é preciso usar (http://localhost:8081/ola/dev/saulo) por exemplo de captura:
+   - cargo = "dev"
+   - nome = "saulo"
+   Esses valores ficam disponíveis em req.params.
+*/
+
+app.get("/parametro/:livro/:autor",function (req,res){
+    res.send(req.params)
+});
+
+/* req.params permite acessar os valores passados na URL como parâmetros.
+   No exemplo acima, acessar "http://localhost:8081/parametro/HarryPotter/J.K.Rowling"
+   retornará um objeto JSON:
+   { livro: "HarryPotter", autor: "J.K.Rowling" }
+   Isso ocorre porque estamos enviando req.params diretamente na resposta.
+*/
+
+app.get("/filho/:mae/:pai",function (req,res){
+    res.send("<h1> Saulo e "+req.params.mae+"</h1>")
+});
+
+/*Parametros podem ser usados de forma mais ampla, req é responsavel por receber dados de uma requisição, quando o usuario digita os
+parametros ele esta enviando os dados atraves de uma requisição http para o servidor node.js então atraves do req conseguimos dados,
+inclusive parametros usando o .params, somente um res.send pode ser enviado por app.get por vez*/
+
+
+/*No primeiro caso eu solicitei livro e autor para exibir os parametros de forma independente*/
+/*No segundo caso eu solicitei o parametro mae para exibir o parametro digitado no /mae independente do pai ter sido digitado,
+coloquei uma tag html <h1> e </h1> para deixar as palavras em negrito*/
+
+app.listen(8081, function(){
+    console.log("servidor rodando na url http://localhost:8081")
+});
+
+//
+
+
+sequelize.authenticate().then(function(){
+    console.log ("conectado com sucesso")
+}).catch(function(erro){
+    console.log("falha ao se conectar: "+ erro)
+})
+
+const Postagem = sequelize.define('postagens', {
+    titulo: {
+        type: DataTypes.STRING,
+        allowNull: false  
+    },
+    conteudo: {
+        type: DataTypes.TEXT,
+        allowNull: false 
+    }
+})
+
+Postagem.create({
+    titulo: "um titulo aleatorio",
+    conteudo: "conteudo qualquer"
+})
+
+const Usuario = sequelize.define('usuarios', {
+    nome: {
+        type: DataTypes.STRING, 
+        allowNull: false 
+    },
+    sobrenome: {
+        type: DataTypes.STRING
+    },
+    idade: {
+        type: DataTypes.INTEGER
+    },
+    email: {
+        type: DataTypes.STRING
+    }
+})
+
+Usuario.create({
+    nome: "matheus",
+    sobrenome: "da silva",
+    idade: 20,
+    email: "matheussilva@gmail.com"
+})
+
+//Usuario.sync({force:true}) // cria a tabela pelo node.js
