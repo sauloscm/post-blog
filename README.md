@@ -102,5 +102,3 @@ Agora a aplicação estará rodando localmente e você poderá visualizar, adici
 
 ---
 
-Se tiver dúvidas ou problemas, fique à vontade para abrir uma issue no repositório! 🚀
-
